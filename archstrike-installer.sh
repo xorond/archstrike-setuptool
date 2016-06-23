@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 main()
 {
-  echo "Lazy installation script for ArchStrike Penetration Testing and Security Layer - made by xorond"
+  echo "Installation script for ArchStrike Penetration Testing and Security Layer - made by xorond"
   echo "This script will help you install ArchStrike on your Arch Linux running computer"
   sleep 3
   echo "> Starting installation process, are you ready? (y/n)"
   read choice
   if [[ "$choice" == 'y' ]]; then
-      lazy-install
+      archstrike-install
   else
       echo "Later then!"
       exit 0
   fi
 }
 
-lazy-install()
+archstrike-install()
 {
   echo "Now starting the install process.."
   echo "Backing up /etc/pacman.conf to pacman.conf.bak"
