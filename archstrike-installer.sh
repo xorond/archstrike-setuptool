@@ -46,8 +46,8 @@ archstrike-install()
   sleep 3
   pacman-key --init
   dirmngr < /dev/null
-  pacman-key -r 7CBC0D53
-  pacman-key --lsign-key 7CBC0D53
+  pacman-key -r 7CBC0D51
+  pacman-key --lsign-key 7CBC0D51
   echo "Done, installing required packages.."
   sleep 2
   pacman -S archstrike-keyring
