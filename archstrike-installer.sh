@@ -18,8 +18,8 @@ main()
 archstrike-install()
 {
   echo "Now starting the install process.."
-  echo "Backing up $pacmanconf to pacman.conf.bak"
-  cp $pacmanconf ${pacmanconf}.bak
+  echo "Backing up $pacmanconf to pacman.conf.bak.(date & time)"
+  cp $pacmanconf ${pacmanconf}.bak."$(date +%F_%R)"
   sleep 2
   echo "Adding archstrike repositories to pacman.conf"
   echo "[archstrike]" >> $pacmanconf
