@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pacmanconf="/etc/pacman.conf"
 main()
 {
   echo "Installation script for ArchStrike Penetration Testing and Security Layer - made by xorond"
@@ -17,46 +18,52 @@ main()
 archstrike-install()
 {
   echo "Now starting the install process.."
-  echo "Backing up /etc/pacman.conf to pacman.conf.bak"
-  sudo cp /etc/pacman.conf /etc/pacman.conf.bak
+  echo "Backing up $pacmanconf to pacman.conf.bak"
+  cp $pacmanconf ${pacmanconf}.bak
   sleep 2
   echo "Adding archstrike repositories to pacman.conf"
-  sudo echo "[archstrike]" >> /etc/pacman.conf
-  sudo echo "Server = https://mirror.archstrike.org/$arch/$repo" >> /etc/pacman.conf
+  echo "[archstrike]" >> $pacmanconf
+  echo "Server = https://mirror.archstrike.org/$arch/$repo" >> $pacmanconf
   sleep 2
   echo "Done, it's mandatory to enable multilib for x86_64 architectures."
   echo "> Is your computer x86_64? (y/n)"
   read arch
   if [[ "$arch" == "y" ]]; then
-    echo "Now opening /etc/pacman.conf"
-    echo "Please remove the comment lines in [multilib] and the following line"
-    sleep 5
-    sudo nano /etc/pacman.conf
-    echo "Done, continuing"
+    echo "> Do you have multilib enabled? (y/n)"
+    read multilib
+    if [[ "$multilib" == "n" ]]; then
+        echo "Now opening $pacmanconf"
+        echo "Please remove the comments (#)  in [multilib] and the following line"
+        sleep 5
+        nano $pacmanconf
+        echo "Done, continuing"
+    fi
   fi
   echo "Performing package database updates.."
-  sleep 1
-  sudo pacman -Syy
+  sleep 3
+  pacman -Syy
   echo "Installing ArchStrike keyring.."
-  sleep 1
-  sudo pacman-key --init
-  sudo dirmngr < /dev/null
-  sudo pacman-key -r 7CBC0D51
-  sudo pacman-key --lsign-key 7CBC0D51
+  sleep 3
+  pacman-key --init
+  dirmngr < /dev/null
+  pacman-key -r 7CBC0D53
+  pacman-key --lsign-key 7CBC0D53
   echo "Done, installing required packages.."
-  sudo pacman -S archstrike-keyring
-  sudo pacman -S archstrike-mirrorlist
+  sleep 2
+  pacman -S archstrike-keyring
+  pacman -S archstrike-mirrorlist
   echo "Done, editing pacman.conf to use the mirrorlist.."
-  sudo sed -i 's|Server = https://mirror.archstrike.org/$arch/$repo|Include = /etc/pacman.d/archstrike-mirrorlist|' /etc/pacman.conf
+  sleep 2
+  sed -i 's|Server = https://mirror.archstrike.org/$arch/$repo|Include = /etc/pacman.d/archstrike-mirrorlist|' $pacmanconf
   echo "> Done. Do you want to add archstrike-testing? (y/n)"
   read testing
   if [[ "$testing" == "y" ]]; then
-    sudo echo "[archstrike-testing]" >> /etc/pacman.conf
-    sudo echo "Include = /etc/pacman.d/archstrike-mirrorlist" >> /etc/pacman.conf
-    echo "Done"
+    echo "[archstrike-testing]" >> $pacmanconf
+    echo "Include = /etc/pacman.d/archstrike-mirrorlist" >> $pacmanconf
+    echo "Added archstrike-testing"
   fi
   echo "Performing last database update.."
-  sudo pacman -Syy
+  pacman -Syy
   echo "You have successfully installed ArchStrike."
   echo "To see all the packages: 'pacman -Sl archstrike'"
   echo "To see all testing packages: 'pacman -Sl archstrike-testing'"
@@ -68,5 +75,10 @@ archstrike-install()
   sleep 10
   exit 0
 }
+if [[ "$(whoami)" != "root" ]]; then
+    echo "$0 can only be run as root, exiting."
+    sleep 2
+    exit 3
+fi
 main
 exit 0
