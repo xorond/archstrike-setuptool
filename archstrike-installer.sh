@@ -23,7 +23,7 @@ archstrike-install()
   sleep 2
   echo "Adding archstrike repositories to pacman.conf"
   echo "[archstrike]" >> $pacmanconf
-  echo "Server = https://mirror.archstrike.org/$arch/$repo" >> $pacmanconf
+  echo "Server = https://mirror.archstrike.org/"$arch"/"$repo"" >> $pacmanconf
   sleep 2
   echo "Done, it's mandatory to enable multilib for x86_64 architectures."
   echo "> Is your computer x86_64? (y/n)"
