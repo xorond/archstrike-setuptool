@@ -6,7 +6,7 @@ main()
   echo "This script will help you install ArchStrike on your Arch Linux running computer"
   sleep 3
   echo "> Starting installation process, are you ready? (y/n)"
-  read choice
+  read -r choice
   if [[ "$choice" == 'y' ]]; then
       archstrike-install
   else
@@ -27,10 +27,10 @@ archstrike-install()
   sleep 2
   echo "Done, it's mandatory to enable multilib for x86_64 architectures."
   echo "> Is your computer x86_64? (y/n)"
-  read arch
+  read -r arch
   if [[ "$arch" == "y" ]]; then
     echo "> Do you have multilib enabled? (y/n)"
-    read multilib
+    read -r multilib
     if [[ "$multilib" == "n" ]]; then
         echo "Now opening $pacmanconf"
         echo "Please remove the comments (#)  in [multilib] and the following line"
@@ -56,7 +56,7 @@ archstrike-install()
   sleep 2
   sed -i 's|Server = https://mirror.archstrike.org/$arch/$repo|Include = /etc/pacman.d/archstrike-mirrorlist|' $pacmanconf
   echo "> Done. Do you want to add archstrike-testing? (y/n)"
-  read testing
+  read -r testing
   if [[ "$testing" == "y" ]]; then
     echo "[archstrike-testing]" >> $pacmanconf
     echo "Include = /etc/pacman.d/archstrike-mirrorlist" >> $pacmanconf
@@ -78,7 +78,7 @@ archstrike-install()
 if [[ "$(whoami)" != "root" ]]; then
     echo "$0 can only be run as root, exiting."
     sleep 2
-    exit 3
+    exit 0
 fi
 main
 exit 0
