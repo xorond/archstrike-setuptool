@@ -44,10 +44,16 @@ archstrike-install()
   pacman -Syy
   echo "Installing ArchStrike keyring.."
   sleep 3
+
+  from="From: archstrike-installer"
+  user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36"
+  url="https://archstrike.org/wiki/setup"
+  key_id=$(curl -H "$from" -A "$user_agent" -s "$url" | grep -o [^#]pacman-key\ -r\ .*$ | awk '{print $3}')
+
   pacman-key --init
   dirmngr < /dev/null
-  pacman-key -r 7CBC0D51
-  pacman-key --lsign-key 7CBC0D51
+  pacman-key -r $key_id
+  pacman-key --lsign-key $key_id
   echo "Done, installing required packages.."
   sleep 2
   pacman -S archstrike-keyring
