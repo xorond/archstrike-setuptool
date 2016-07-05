@@ -62,14 +62,27 @@ archstrike-install()
     echo "Include = /etc/pacman.d/archstrike-mirrorlist" >> $pacmanconf
     echo "Added archstrike-testing"
   fi
-  echo "Performing last database update.."
+  echo "Performing database update.."
   pacman -Syy
-  echo "You have successfully installed ArchStrike."
+  echo "You have successfully installed ArchStrike repositories."
   echo "To see all the packages: 'pacman -Sl archstrike'"
   echo "To see all testing packages: 'pacman -Sl archstrike-testing'"
   echo "To see all groups: 'pacman -Sg | grep archstrike'"
   echo "To see all packages in a group: 'pacman -Sgg | grep archstrike-<groupname>'"
-  echo "Thanks for installing ArchStrike!"
+  sleep 10
+  echo "Do you want to go ahead and install everything from the main repostitory? (y/n)"
+  read -r main-install
+  if [[ "$main-install" == "y" ]]; then
+    echo "Installing all packages from main, this will take a while.."
+    pacman -S archstrike --noconfirm
+  fi
+  echo "How about testing? (y/n)"
+  read -r testing-install
+  if [[ "$testing-install" == "y" ]]; then
+    echo "Installing all packages from testing, this will take a while.."
+    pacman -S archstrike-testing --noconfirm
+  fi
+  echo "Thanks for using ArchStrike!"
   echo "This was a script by xorond https://github.com/xorond"
   echo "More info on our website: https://archstrike.org"
   sleep 10
