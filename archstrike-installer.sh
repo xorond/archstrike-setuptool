@@ -45,10 +45,9 @@ archstrike-install()
   echo "Installing ArchStrike keyring.."
   sleep 3
 
-  from="From: archstrike-installer"
-  user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36"
+  user_agent="archstrike-installer"
   url="https://archstrike.org/wiki/setup"
-  key_id=$(curl -H "$from" -A "$user_agent" -s "$url" | grep -o [^#]pacman-key\ -r\ .*$ | awk '{print $3}')
+  key_id=$(curl -A "$user_agent" -s "$url" | grep -o [^#]pacman-key\ -r\ .*$ | awk '{print $3}')
 
   pacman-key --init
   dirmngr < /dev/null
