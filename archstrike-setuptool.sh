@@ -41,7 +41,11 @@ archstrike-install()
   fi
   echo "Performing package database updates.."
   sleep 3
-  pacman -Syy
+  status=$(pacman -Syy 2>&1 | tee /dev/tty | grep -om 1 error)
+  if [ "$status" == "error" ]; then 
+    echo "Critical error occurred when performing package database updates"
+    exit 1
+  fi
   echo "Installing ArchStrike keyring.."
   sleep 3
 
