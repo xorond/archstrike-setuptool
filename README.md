@@ -14,7 +14,7 @@ To run the script, get the source file archstrike-installer.sh
 
 You can do so by running
 
-````bash
+```bash
 git clone https://github.com/xorond/archstrike-setuptool
 cd archstrike-setuptool
 ```
